@@ -1,0 +1,100 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.upphoto.dao.UploadImageDao">
+    <!--图片上传-->
+    <select id="insertPic" resultType="java.lang.Integer">
+        <!-- 具体的sql -->
+        insert into tb_phone_img(
+        id,
+        arr_id,
+        price,
+        top_addr,
+        left_addr,
+        right_addr,
+        bottom_addr,
+        phone_type_pid,
+        obverse_addr,
+        reverse_addr,
+        left_top_addr,
+        right_top_addr,
+        left_bottom_addr,
+        right_bottom_addr
+
+        )
+        values (default,
+        #{arr_id},
+        #{price},
+        #{photos.top_addr},
+        #{photos.left_addr},
+        #{photos.right_addr},
+        #{photos.bottom_addr},
+        (SELECT id FROM tb_phone_type WHERE type = #{typeId}),
+        #{photos.obverse_addr},
+        #{photos.reverse_addr},
+        #{photos.left_top_addr},
+        #{photos.right_top_addr},
+        #{photos.left_bottom_addr},
+        #{photos.right_bottom_addr}
+        )
+    </select>
+    <select id="getOnePhone"
+            parameterType="java.lang.String"
+            resultType="java.util.HashMap">
+        select
+        id,
+        arr_id,
+        price,
+        top_addr,
+        left_addr,
+        right_addr,
+        bottom_addr,
+        obverse_addr,
+        reverse_addr,
+        left_top_addr,
+        right_top_addr,
+        left_bottom_addr,
+        right_bottom_addr
+        from tb_phone_img
+        where phone_type_pid =
+        (
+        select id from tb_phone_type where type = #{typeId}
+        )
+    </select>
+
+    <select id="getPhoneType" resultType="PhoneType">
+        select
+        id,
+        type,
+        name
+        from tb_phone_type
+    </select>
+
+    <select id="getPhoneById" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select
+        top_addr,
+        left_addr,
+        right_addr,
+        bottom_addr,
+        obverse_addr,
+        reverse_addr,
+        left_top_addr,
+        right_top_addr,
+        left_bottom_addr,
+        right_bottom_addr
+        from tb_phone_img
+        where id = #{phoneId}
+    </select>
+
+    <delete id="deleteByTypeIdArrId">
+        DELETE FROM
+        tb_phone_img
+        WHERE
+        arr_id = #{1}
+        and
+        phone_type_pid = (
+        select id from tb_phone_type where type = #{0}
+        )
+    </delete>
+</mapper>

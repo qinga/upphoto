@@ -1,0 +1,13 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.upphoto.dao.CustomDao">
+    <!--用户登录-->
+    <select id="customLogin" parameterType="Custom" resultType="Custom">
+        <!-- 具体的sql -->
+        select username, password
+        from tb_user
+        where username=#{username} AND password=#{password}
+    </select>
+</mapper>

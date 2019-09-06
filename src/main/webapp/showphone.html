@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>手机列表</title>
+    <link rel="stylesheet" href="./layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+
+        .main {
+        }
+
+        .head_wrapper {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #d3e2d3;
+            padding: 0 20px;
+        }
+
+        .search_left {
+            width: 80vw;
+            position: relative
+        }
+
+        p.wrapper-input {
+            margin: 0;
+            height: 48px;
+            line-height: 48px;
+            position: relative;
+        }
+
+        .search_icon {
+            width: 18px;
+            height: auto;
+            position: absolute;
+            top: 16px;
+            left: 12px;
+        }
+
+        .search_inut {
+            padding: 4px 0 4px 34px;
+            width: 63vw;
+            border-radius: 4vw;
+            height: 3.2vh;
+            border: none;
+            box-shadow: 0px 0px 2px 0px #cfcfcf,
+            0px 0px 2px 0px #cfcfcf,
+            0px 0px 2px 0px #cfcfcf,
+            0px 0px 2px 0px #cfcfcf;
+            background: #ffffff;
+        }
+
+        .search_word {
+            display: inline-block;
+            width: 14vw;
+            background: #d3e2d3;
+            text-align: center;
+            padding: 4px 4px;
+            border-radius: 14px;
+            font-family: "Microsoft yahei";
+            font-size: 1em;
+            font-weight: 100;
+            margin-left: 2vw;
+            color: #FFFFFF;
+        }
+
+        .phone_list {
+            padding: 0 20px
+        }
+
+        .phone_search-list {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .navigator-content {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: flex;
+
+            -webkit-align-items: center;
+            -moz-align-items: center;
+            -ms-align-items: center;
+            -o-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+
+            -webkit-flex-wrap: wrap;
+            -webkit-box-lines: multiple;
+            -moz-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .navigator-content > a.layui-btn {
+            padding: 0;
+            margin-bottom: 10px;
+            border-radius: 14px;
+            background: #cfcfcf;
+            height: 32px;
+            line-height: 32px;
+        }
+
+        .phone_detail-list {
+            padding: 0 20px;
+        }
+
+        .li-list {
+            margin-bottom: 10px;
+        }
+
+        .a-list {
+            /*display:-webkit-box;*/
+            /*display:-webkit-flex;*/
+            /*display:-moz-box;*/
+            /*display:-ms-flexbox;*/
+            /*display:flex;*/
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .list-item-left {
+            width: 40vw;
+            height: 24vh;
+            box-shadow: 0px 0px 2px 0px #cfcfcf,
+            0px 0px 2px 0px #cfcfcf,
+            0px 0px 2px 0px #cfcfcf,
+            0px 0px 2px 0px #cfcfcf;
+            border-radius: 3vw;
+
+            width: 44.8%;
+            float: left;
+            text-align: center;
+            line-height: 24vh;
+            margin-bottom: 10px;
+        }
+
+        .list-item-left > img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 3vw;
+        }
+
+        .list-item-right {
+            /*width: -webkit-calc(100vw - 40px - 40vw);*/
+            /*width: -moz-calc(100vw - 40px - 40vw);*/
+            /*width: calc(100vw - 40px - 40vw);*/
+            line-height: 7vw;
+            width: 55.2%;
+            float: left;
+        }
+
+        .list-item-right > p {
+            margin-left: 10px;
+        }
+
+        .search_one {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: flex;
+
+            -webkit-align-items: center;
+            -moz-align-items: center;
+            -ms-align-items: center;
+            -o-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+
+            position: absolute;
+            top: 12px;
+            left: 32px;
+            border-radius: 15px;
+            padding: 1px 6px;
+            line-height: 3.2vh;
+            background: rgba(0, 0, 0, 0.7);
+
+            color: #fff;
+        }
+
+        .close {
+            position: relative;
+            width: 2px;
+            height: 3vh;
+            background: #ffffff;
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+            display: inline-block;
+
+            margin-left: 10px;
+            margin-right: 2px;
+        }
+
+        .close:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 3vh;
+            background: #ffffff;
+            -webkit-transform: rotate(270deg);
+            -moz-transform: rotate(270deg);
+            -o-transform: rotate(270deg);
+            -ms-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .empty-data {
+            text-align: center;
+            color: #cfcfcf;
+        }
+
+        .cur {
+            background: darkslategray !important;
+        }
+
+        .search_bg {
+            background: #00F7DE !important;
+        }
+    </style>
+</head>
+<body>
+<div class="main" id="v-photo">
+    <div class="head_wrapper">
+        <div class="search_left">
+            <p class="wrapper-input">
+                <img src="./images/sea.png" class="search_icon">
+                <span>
+                        <input type="text"
+                               :placeholder="flag.showPlaceHolder ? '请点击搜索发现中的液晶类型': ''"
+                               class="search_inut" disabled="disabled"/>
+                    </span>
+            </p>
+            <span class="search_one"
+                  v-if="phoneTypeName"
+                  @click="showSearch">
+                    <span>{{phoneTypeName}}</span>
+                    <span class="close"></span>
+                </span>
+        </div>
+        <span
+                :class="'search_word' + (flag.searchBg ? ' search_bg': '')"
+                @click="search(typeId)">搜索</span>
+    </div>
+    <div class="phone_list">
+        <div class="phone_search-list">
+            <span>搜索发现</span>
+            <span><img src="./images/skim.png" alt="" style="width: 20px;"></span>
+        </div>
+        <!--没有手机类型时-->
+        <div class="empty-data" v-if="allPhoneType.length == 0">
+            暂无类型
+        </div>
+        <div class="navigator-content">
+            <!--遍历数组-->
+            <a :class="'layui-btn ' + (phoneTypeName==vitem.name ? ' cur': ' ')"
+               v-for="(vitem, key) in allPhoneType"
+               :key="vitem.type"
+               @click="changeCurType(vitem.name, vitem.type)"
+            >
+                {{vitem.name}}
+            </a>
+        </div>
+    </div>
+    <div class="phone_detail-list">
+        <!--暂无数据-->
+        <div v-if="onePhone.length == 0"
+             class="empty-data"
+             style="height: 50vh; line-height: 50vh;">暂无液晶，敬请期待
+        </div>
+        <ul style="margin-top: 8px">
+            <li class="li-list"
+                v-for="(v, k) in onePhone"
+                :key="v.obverse_addr"
+                @click="showDetailPic(v.id)">
+                <div class="a-list">
+                    <div class="list-item-left"><img :src="v.obverse_addr"></div>
+                    <div class="list-item-right">
+                        <p>液晶型号：{{curPhoneType}}</p>
+                        <p>液晶编号：{{v.arr_id ? v.arr_id: "暂无"}}</p>
+                        <p>单价：{{v.price}}</p>
+                        <p>邮箱：姑苏@qq.com</p>
+                        <p>手机号码：13267871345</p>
+                        <p>微信：1124708876</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="./res/utils/vue.min.js" type="text/javascript"></script>
+<script src="./res/utils/axios.min.js"></script>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: "#v-photo",
+        data: function () {
+            return {
+                onePhone: [],
+                allPhoneType: [],
+                typeId: '',
+                // 选中的手机的名字
+                phoneTypeName: '',
+                flag: {
+                    showPlaceHolder: false,
+                    searchBg: false
+                }
+            }
+        },
+        methods: {
+            changeCurType: function (type, typeId) {
+                this.phoneTypeName = type;
+                this.flag.searchBg = true;
+                this.flag.showPlaceHolder = false;
+                this.typeId = typeId;
+
+                // 存储当前手机类型
+                localStorage.setItem('currentType', this.phoneTypeName);
+
+                this.search(typeId);
+            },
+            showSearch: function () {
+                this.phoneTypeName = '';
+                this.flag.showPlaceHolder = true;
+                this.flag.searchBg = false;
+            },
+
+            search: function (typeId) {
+                var vm = this;
+                axios.get('/upphoto/getOnePhone/' + typeId)
+                    .then(function (onePhone) {
+                        if (onePhone.data.msg == "SUCCESS" && onePhone.data.status == 200) {
+                            vm.onePhone = onePhone.data.data;
+                        } else {
+                            // 数据为空时，清除原先的数据
+                            vm.onePhone = [];
+                        }
+                    })
+            },
+            /**
+             * 跳转到改手机类型更多的图片中
+             * */
+            showDetailPic: function (phoneId) {
+                window.location.href = "./detailOnePhone.html?" + phoneId;
+            }
+        },
+        computed: {
+            curPhoneType: function () {
+                var vm = this;
+                return vm.allPhoneType.find(function (item) {
+                    return item.type == vm.typeId;
+                }).name;
+            }
+        },
+        mounted: function () {
+            var vm = this;
+            var typeId = document.location.search.split("?")[1];
+            if (!typeId || Number.isNaN(Number(typeId)) || typeof Number(typeId) != "number") {
+                typeId = "10061";
+            }
+            vm.typeId = typeId;
+            axios.all([
+                axios.get('/upphoto/getOnePhone/' + typeId),
+                axios.get('/upphoto/getAllPhoneType')
+            ])
+                .then(axios.spread(function (onePhone, allPhone) {
+                    if (onePhone.data.msg == "SUCCESS" && onePhone.data.status == 200) {
+                        vm.onePhone = onePhone.data.data;
+                    }
+                    if (allPhone.data.msg == "SUCCESS" && allPhone.data.status == 200) {
+                        vm.allPhoneType = allPhone.data.data;
+                        var item = vm.allPhoneType.find(function (item) {
+                            return item.type == vm.typeId;
+                        });
+                        if (item) {
+                            vm.phoneTypeName = item.name;
+                        }
+                        // 存储当前手机类型
+                        localStorage.setItem('currentType', vm.phoneTypeName);
+                    }
+                }))
+        }
+    })
+</script>
+</body>
+</html>

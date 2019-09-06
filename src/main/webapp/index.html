@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <link rel="stylesheet" href="./layui/css/layui.css"/>
+    <style>
+        .top_entry {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: flex;
+
+            -webkit-justify-content: center;
+            -moz-justify-content: center;
+            -ms-justify-content: center;
+            -o-justify-content: center;
+            justify-content: center;
+
+            -webkit-box-pack: center;
+            -webkit-box-align: center;
+            -moz-box-pack: center;
+            -moz-box-align: center;
+            -ms-flex-pack: center;
+            -ms-flex-align: center;
+
+
+            -webkit-align-items: center;
+            -moz-align-items: center;
+            -ms-align-items: center;
+            -o-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+
+            -webkit-box-align: center;
+            -moz-box-pack: center;
+            -moz-box-align: center;
+            -ms-flex-pack: center;
+            -ms-flex-align: center;
+        }
+
+        .top_entry img {
+            width: 60vw;
+            height: auto;
+        }
+
+        .navigator-content {
+            border: none;
+        }
+
+        .navigator-content a {
+            margin-bottom: 4vw;
+            margin-left: 10px;
+        }
+
+        h2 {
+            margin: 10px 0px 20px 10px;
+        }
+
+        .pink {
+            background: #55efc4;
+        }
+
+        .pink7 {
+            background: #81ecec;
+        }
+
+        .pink8 {
+            background: #22a6b3;
+        }
+
+        a.login {
+            margin-top: 15px;
+            background: #ffbe76;
+            border-radius: 20px;
+            height: 32px;
+            line-height: 32px;
+        }
+    </style>
+</head>
+<body>
+<div class="top_entry">
+    <img src="./images/code.jpg" alt=""/>
+    <div>
+        <span style="color: #ff7979; font-size: 16px;"><<&nbsp;作者微信</span>
+        <a href="login.html" class="layui-btn login">卖家入口</a>
+    </div>
+</div>
+<div class="" style="border: none">
+    <div class="">
+        <h2 class="phone-navigator">苹果液晶</h2>
+        <div class="navigator-content">
+            <a href="./showphone.html?10061" class="layui-btn pink">iphone 6</a>
+            <a href="./showphone.html?10062" class="layui-btn pink">iphone 6plus</a>
+            <a href="./showphone.html?10063" class="layui-btn pink">iphone 6s</a>
+            <a href="./showphone.html?10064" class="layui-btn pink">iphone 6p</a>
+
+            <a href="./showphone.html?10071" class="layui-btn pink7">iphone 7G</a>
+            <a href="./showphone.html?10072" class="layui-btn pink7">iphone 7plus</a>
+            <a href="./showphone.html?10081" class="layui-btn pink8">iphone 8G</a>
+            <a href="./showphone.html?10082" class="layui-btn pink8">iphone 8plus</a>
+        </div>
+    </div>
+</div>
+<script src="./res/utils/jquery.min.js"></script>
+<script src="./layui/layui.js"></script>
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>

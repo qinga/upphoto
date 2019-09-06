@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片上传</title>
+    <link rel="stylesheet" href="./layui/css/layui.css"/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            margin-left: 10px;
+        }
+
+        .navigator-content {
+            width: calc(100vw - 2vw);
+            width: -webkit-calc(100vw - 2vw);
+            width: -moz-calc(100vw - 2vw);
+            margin-top: 10px;
+        }
+
+        .upload-title {
+            text-align: center;
+            padding: 4px 0 0 0;
+            font-weight: bold;
+            word-spacing: 4px;
+            letter-spacing: 4px;
+        }
+
+        img {
+            border-radius: 5px;
+            height: 40vw;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        input.upInput {
+            width: 47vw;
+            height: 40vw;
+            opacity: 0;
+            background: rgba(255, 255, 255, 0);
+        }
+
+        .outer-box {
+            box-shadow: 0px 0px 2px 0px #cfcfcf,
+            0px 0px 2px 0px #cfcfcf,
+            0px 0px 2px 0px #cfcfcf,
+            0px 0px 2px 0px #cfcfcf;
+        }
+
+        .flexbox {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: flex;
+
+            -webkit-justify-content: center;
+            -moz-justify-content: center;
+            -ms-justify-content: center;
+            -o-justify-content: center;
+            justify-content: center;
+
+            -webkit-box-pack: center;
+            -webkit-box-align: center;
+            -moz-box-pack: center;
+            -moz-box-align: center;
+            -ms-flex-pack: center;
+            -ms-flex-align: center;
+
+
+            -webkit-align-items: center;
+            -moz-align-items: center;
+            -ms-align-items: center;
+            -o-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+
+            -webkit-box-align: center;
+            -moz-box-pack: center;
+            -moz-box-align: center;
+            -ms-flex-pack: center;
+            -ms-flex-align: center;
+        }
+
+        .outer-box .collect_img {
+            height: 40vw;
+        }
+
+        .booth {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 40vw);
+            grid-gap: 2vw;
+            margin: 2vw;
+        }
+
+        .booth > div {
+            border-radius: 10px;
+        }
+
+        .upload-img {
+            display: block;
+            width: 40vw;
+            margin: 34px auto 34px auto;
+        }
+
+        .navigator-content .btn:nth-child(6) {
+            margin-top: 6px;
+        }
+
+        .btn {
+            display: inline-block;
+            height: 38px;
+            line-height: 38px;
+            background-color: #9F9F9F;
+            color: #fff;
+            white-space: nowrap;
+            text-align: center;
+            font-size: 14px;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .layui-btn {
+            padding: 0 2px !important;
+        }
+
+        .icon-add {
+            position: relative;
+        }
+
+        .center {
+            position: absolute;
+            text-align: center;
+            top: 48%;
+            left: calc(50% - 21px);
+            left: -webkit-calc(50% - 21px);
+            let: -moz-calc(50% - 21px);
+        }
+
+        .upload_circle-none {
+            display: none
+        }
+
+        .upload-loading {
+            position: fixed;
+            height: auto;
+            background: rgba(0, 0, 0, 0.7);
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .upload_desc {
+            text-align: center;
+            position: relative;
+            top: calc(50% - 72px);
+            top: -webkit-calc(50% - 72px);
+            top: -moz-calc(50% - 72px);
+        }
+
+        .circles-text {
+            font-size: 24px !important;
+            color: #ffffff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .mask {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.6);
+
+            font-size: 20px;
+            letter-spacing: 2px;
+            word-spacing: 2px;
+            color: #ffffff;
+        }
+
+        .layui-form-item {
+            margin-top: 10px;
+        }
+
+        .layui-form-label {
+            width: auto;
+        }
+
+        .layui-form-item .layui-input-inline {
+            margin: 0 0 10px 65px;
+        }
+    </style>
+</head>
+<body>
+<h2 class="upload-title">图片上传</h2>
+<div class="" style="padding: 0 2vw;">
+    <h3 class="phone-navigator" style="display: inline;">液晶品牌</h3>
+    <span style="font-size: 12px;">(请选择需要拍照的类型)</span>
+    <div class="navigator-content selectClassfiy">
+        <button class="layui-btn" data-type="10061">iphone 6</button>
+        <button class="btn" data-type="10062">iphone 6plus</button>
+        <button class="btn" data-type="10063">iphone 6s</button>
+        <button class="btn" data-type="10064">iphone 6p</button>
+
+        <button class="btn" data-type="10071">iphone 7G</button>
+        <button class="btn" data-type="10072">iphone 7plus</button>
+        <button class="btn" data-type="10081">iphone 8G</button>
+        <button class="btn" data-type="10082">iphone 8plus</button>
+
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">编号</label>
+        <div class="layui-input-inline" style="position: relative">
+            <input type="text"
+                   id="type_arrid"
+                   name="arr_id"
+                   placeholder="请输入该液晶类型的编号"
+                   autocomplete="off" class="layui-input"
+                   style="width: 70%;"/>
+            <form class="layui-form"
+                  lay-filter="formTest"
+                  id="open_close"
+                  style="display: inline;position: absolute;top: 0px;right: 16px;">
+                <input type="checkbox"
+                       name="switchone"
+                       lay-filter="switchTest"
+                       lay-skin="switch"
+                       lay-text="关闭|开启">
+            </form>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">单价</label>
+        <input type="text"
+               id="price"
+               name="price"
+               placeholder="请输入该液晶的单价"
+               autocomplete="off" class="layui-input"
+               style="width: 60%;"/>
+    </div>
+</div>
+<div class="booth">
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="obverse_addr">正面</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="left_top_addr">左上角</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="right_top_addr">右上角</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="left_bottom_addr">左下角</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="right_bottom_addr">右下角</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="reverse_addr">反面</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="top_addr">上面</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="bottom_addr">底面</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="left_addr">左面</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+    <div class="outer-box flexbox">
+        <div class="icon-add">
+            <span class="center" data-pos="right_addr">右面</span>
+            <input type="file" accept="image/*" class="upInput" capture="camera"/>
+        </div>
+        <div class="collect_img flexbox">
+        </div>
+    </div>
+</div>
+<div class="upload-loading upload_circle-none">
+    <div class="upload_desc">
+        <!--上传进度条-->
+        <div class="circle" id="uploadCircle">
+        </div>
+        <div id="time"></div>
+    </div>
+</div>
+<div class="mask hidden flexbox">请先登录!</div>
+<button type="button" class="layui-btn upload-img">上传图片</button>
+<script type="text/javascript" src="./res/utils/circles.min.js"></script>
+<script src="./layui/layui.js"></script>
+
+<script>
+    layui.use(['layer', 'form'], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+        form.render();
+
+        form.val("formTest", {
+            "switchone": false
+        })
+        form.on('switch(switchTest)', function (data) {
+            console.log(data)
+            var open = this.checked;
+            console.log(open)
+            if (open) {
+                layer.tips('开启后可以删除某个编号的液晶', '#open_close');
+                document.getElementsByClassName("booth")[0].classList.add("hidden");
+                document.getElementsByClassName("upload-img")[0].innerText = "删除选中液晶";
+                document.getElementsByClassName("upload-img")[0].classList.add("delete");
+            } else {
+                document.getElementsByClassName("booth")[0].classList.remove("hidden");
+                document.getElementsByClassName("upload-img")[0].classList.remove("delete");
+                document.getElementsByClassName("upload-img")[0].innerText = "上传图片";
+            }
+        });
+    });
+    (function () {
+        // 校验用户是否登录
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/upphoto/thumb", true);
+        xhr.setRequestHeader("content-type", "application/json");
+        xhr.send(null);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var result = JSON.parse(xhr.response);
+                    if (result.status == 10 && result.msg == "NOLOGIN") {
+                        document.querySelector(".mask").className = "mask flexbox";
+                        setTimeout(function () {
+                            window.location.href = "./login.html";
+                        }, 500)
+                    }
+                }
+            }
+        }
+    }())
+    var myCircle = Circles.create({
+        id: 'uploadCircle',
+        radius: 60,
+        value: 0,
+        maxValue: 100,
+        width: 10,
+        text: function (value) {
+            return value + '%';
+        },
+        colors: ['#F5F5F5', '#5CB85C'],
+        duration: 400,
+        wrpClass: 'circles-wrp',
+        textClass: 'circles-text',
+        valueStrokeClass: 'circles-valueStroke',
+        maxValueStrokeClass: 'circles-maxValueStroke',
+        styleWrapper: true,
+        styleText: true
+    });
+    (function () {
+        var constant = {
+            upimg: 10,
+            needPic: 3,
+            hasUp: 0
+        }
+        var tips = {
+            // 未选择类型
+            UNSELECT_CLASSIFY: true,
+            // 不足六张
+            NO_SIX: true,
+            NO_SELECT_ARRID: true,
+            NO_SELECT_PRICE: true,
+            // 未选择类型提示
+            UNSELECT_CLASSIFY_TIP: "请选择要上传媒体类型",
+            // 不足六张提示
+            NO_SIX_TIP: "不足三张图片,请继续上传",
+            NO_SELECT_ARRID_TIP: "请输入液晶编号",
+            NO_SELECT_PRICE_TIP: "请输入液晶单价"
+        };
+        // 计算上传进度
+        var loaded = 0,
+            ot = 0,
+            total = 0,
+            oloaded = 0;
+        // 上传图片按钮
+        var upload = document.querySelector(".upload-img");
+        var blobData = new FormData();
+        /**
+         * 图片选择，删除，展示，压缩，封装blob参数，
+         * @type {{init: init,
+         * processData: (function(*, *=): Blob),
+         * compress: compress,
+         * chooseImage: chooseImage,
+         * preShowPic: preShowPic,
+         * delPic: delPic,
+         * setBlobData: setBlobData}}
+         */
+        var ImageUpload = {
+            init: function () {
+                this.chooseImage();
+                this.delPic();
+            },
+            chooseImage: function () {
+                // this表示ImageUpload
+                var that = this;
+                var upInput = document.querySelectorAll(".upInput");
+                for (var i = 0; i < upInput.length; i++) {
+                    upInput[i].onchange = function () {
+                        var file = this.files[0];
+                        if (file.type.indexOf("image") === 0) {
+                            if (file.size >= 1024 * 1024 * 6) {
+                                layer.msg('请上传小于6M的图片')
+                            } else {
+                                that.preShowPic(file, this); //图片预览
+                            }
+                        } else {
+                            layer.msg('请不要上传非图片类型')
+                            return 0;
+                        }
+                    }
+                }
+            },
+            preShowPic: function (file, target) {
+                var that = this;
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                // 监听读取操作结束
+                reader.onloadend = function () {
+                    var imageBase64 = reader.result;
+                    // 赋值到图片上显示出来
+                    var imgEle = document.createElement("img");
+                    // 取出base64代码
+                    imgEle.src = imageBase64;
+                    var collect = target.parentElement.nextElementSibling;
+                    collect.insertBefore(imgEle, collect.firstChild);
+                    var preClassName = target.parentNode.className;
+                    target.parentNode.className = preClassName + " hidden";
+
+                    // 图片压缩上传，大于2.0M压缩图片
+                    if (file.size / 1024 > 1024 * 2.0) {
+                        that.compress(imageBase64, {
+                            quality: 0.6
+                        }, function (base64Codes) {
+                            // 返回压缩图片的blob类型
+                            var imgBlob = that.processData(base64Codes, file.type);
+                            var pos = target.previousElementSibling.dataset.pos;
+                            that.setBlobData(pos, imgBlob);
+                        });
+                    } else {
+                        var pos = target.previousElementSibling.dataset.pos;
+                        // 图片小于2M的话，直接上传。
+                        that.setBlobData(pos, file);
+                    }
+                };
+            },
+            compress: function (path, obj, callback) {
+                var img = new Image();
+                img.src = path;
+                img.onload = function () {
+                    var that = this;
+                    // 默认按比例压缩
+                    var w = that.width,
+                        h = that.height,
+                        scale = w / h;
+                    w = obj.width || w;
+                    h = obj.height || (w / scale);
+
+                    //生成canvas
+                    var canvas = document.createElement('canvas'),
+                        ctx = canvas.getContext('2d');
+                    canvas.width = w;
+                    canvas.height = h;
+                    ctx.drawImage(that, 0, 0, w, h);
+
+                    // 默认图片质量为0.7
+                    var quality = 0.7;
+                    if (obj.quality && obj.quality <= 1 && obj.quality > 0) {
+                        quality = obj.quality;
+                    }
+                    // 回调函数返回base64的值
+                    var base64 = canvas.toDataURL('image/jpeg', quality);
+                    callback(base64);
+                }
+            },
+            /*图片base64转blob*/
+            processData: function (dataUrl, type) {
+                var binaryString = window.atob(dataUrl.split(',')[1]),
+                    arrayBuffer = new ArrayBuffer(binaryString.length),
+                    intArray = new Uint8Array(arrayBuffer);
+                for (var i = 0, j = binaryString.length; i < j; i++) {
+                    intArray[i] = binaryString.charCodeAt(i);
+                }
+                var data = [intArray], blob;
+
+                try {
+                    blob = new Blob(data, {type: "image/jpeg"});
+                } catch (e) {
+                    window.BlobBuilder = window.BlobBuilder ||
+                        window.WebKitBlobBuilder ||
+                        window.MozBlobBuilder ||
+                        window.MSBlobBuilder;
+                    if (e.name === 'TypeError' && window.BlobBuilder) {
+                        var builder = new BlobBuilder();
+                        builder.append(arrayBuffer);
+                        blob = builder.getBlob(type);
+                    } else {
+                        console.log('版本过低，不支持图片压缩上传');
+                    }
+                }
+                return blob;
+            },
+            delPic: function delPic() {
+
+            },
+            /*blob参数上传*/
+            setBlobData: function (k, v) {
+                blobData.append(k, v);
+            }
+        };
+        ImageUpload.init();
+
+        /**
+         * ajax具体上传图片操作
+         * @type {{init: init,
+         * start: start,
+         * upProgress, upProgress}}
+         */
+        var ajax = {
+            url: {
+                upUrl: "/upphoto/thumb"
+            },
+            init: function () {
+                var deleteEle = document.getElementsByClassName("delete");
+                var xhr = new XMLHttpRequest();
+                // 走删除的操作
+                if (deleteEle.length > 0) {
+                    if (validate.selectClassify && validate.inputArrId) {
+                        // 哪个类型的液晶
+                        var typeId = document.querySelector(".layui-btn").dataset["type"]
+                        // 哪个编号的液晶
+                        var arr_id = document.getElementById("type_arrid").value.trim();
+                        // 发送url地址
+                        xhr.open('DELETE', '/upphoto/delete/' + typeId + '/' + arr_id, true);
+                        // 发送数据
+                        xhr.send(null);
+                        // 上传成功时
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                console.log(xhr.response)
+                                var result = JSON.parse(xhr.response)
+                                console.log(result)
+                                if (result.status == "200" && result.msg == "SUCCESS") {
+                                    layer.msg("删除液晶成功")
+                                    window.setTimeout(function () {
+                                        window.location.reload()
+                                    }, 800)
+                                } else if (result.status == 401 && result.msg == "EMPTY") {
+
+                                    layer.msg("未成功，请确认液晶类型或型号是否正确");
+                                    document.getElementById("type_arrid").value = ""
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (validate.selectEnough()
+                        && validate.selectClassify()
+                        && validate.inputArrId()
+                        && validate.inputPrice()) {
+                        ajax.start(xhr);
+                    } else {
+                        // 未选择正确的上传类型
+                        if (!tips.UNSELECT_CLASSIFY_TIP) {
+                            layer.msg(tips.UNSELECT_CLASSIFY_TIP)
+                        } else if (!tips.NO_SIX) {
+                            // 不足三张
+                            layer.msg(tips.NO_SIX_TIP)
+                        } else if (!tips.NO_SELECT_ARRID) {
+                            // 未输入液晶编号
+                            layer.msg(tips.NO_SELECT_ARRID_TIP)
+                        } else if (!tips.NO_SELECT_PRICE) {
+                            // 未输入液晶单价
+                            layer.msg(tips.NO_SELECT_PRICE_TIP)
+                        }
+                    }
+                }
+            },
+            start: function (xhr) {
+                var classify = document.querySelector(".layui-btn").dataset["type"];
+                var arr_id = document.getElementById("type_arrid").value;
+                var price = document.getElementById("price").value;
+                ImageUpload.setBlobData("classify", classify);
+                ImageUpload.setBlobData("arr_id", arr_id);
+                ImageUpload.setBlobData("price", price);
+
+                // 超时时间为1分钟
+                xhr.timeout = 1 * 60 * 1000;
+                // 显示进度条
+                xhr.onloadstart = function () {
+                    document.querySelector(".upload-loading").className = "upload-loading ";
+                };
+                // 监听上传进度
+                xhr.upload.onprogress = this.upProgress;
+                // 发送url地址
+                xhr.open('post', this.url.upUrl, true);
+                // 发送数据
+                xhr.send(blobData);
+                // 上传成功时
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var result = JSON.parse(xhr.response)
+                        console.log(result);
+                        if (result.status == "200" && result.msg == "SUCCESS") {
+                            layer.msg("上传图片成功")
+                            window.setTimeout(function () {
+                                window.location.reload()
+                            }, 800)
+                        }
+                    }
+                }
+
+                xhr.onload = function () {
+                    document.querySelector(".upload-loading").className = "upload-loading upload_circle-none";
+                };
+
+                xhr.ontimeout = function () {
+                    document.querySelector(".upload-loading").className = "upload-loading upload_circle-none";
+                    layer.msg("上传图片超时，请稍后重试")
+                };
+
+                xhr.onerror = function () {
+                    document.querySelector(".upload-loading").className = "upload-loading upload_circle-none";
+                    layer.msg("网络错误，请稍后重试")
+                }
+            },
+            upProgress: function (event) {
+                // event.total是需要传输的总字节，
+                // event.loaded是已经传输的字节。
+                // 如果event.lengthComputable不为真，则event.total等于0
+                if (event.lengthComputable) {
+                    console.log(event.loaded)
+                    loaded = event.loaded;
+                    total = event.total;
+                    var complete = (event.loaded / event.total * 100).toFixed(1);
+                    // 更新进度
+                    myCircle.update(Math.round(Number(complete)));
+                }
+                var time = document.getElementById("time");
+                var nt = new Date().getTime();
+                //计算出上次调用该方法时到现在的时间差，单位为s
+                var pertime = (nt - ot) / 1000;
+                //重新赋值时间，用于下次计算
+                ot = new Date().getTime();
+                //计算该分段上传的文件大小，单位b
+                var perload = event.loaded - oloaded;
+                //重新赋值已上传文件大小，用以下次计算
+                oloaded = event.loaded;
+                //上传速度计算
+                //单位b/s
+                var speed = perload / pertime;
+                var bspeed = speed;
+                //单位名称
+                var units = 'b/s';
+                if (speed / 1024 > 1) {
+                    speed = speed / 1024;
+                    units = 'k/s';
+                }
+                if (speed / 1024 > 1) {
+                    speed = speed / 1024;
+                    units = 'M/s';
+                }
+                speed = speed.toFixed(1);
+                //剩余时间
+                var restTime = ((event.total - event.loaded) / bspeed).toFixed(1);
+                time.innerHTML = '<p><span style=\"color: #FFFFFF\">传输速度：' + speed + units + '</span></p><p><span style="color: #FFFFFF">剩余时间：' + restTime + 's</span></p>';
+            }
+        };
+
+
+        var validate = {
+            selectEnough: function () {
+                // 1. 判断是否上传八张完整图片
+                // 上传不足八张图片
+                var fileLen = document.querySelectorAll(".collect_img").length;
+                var count = 0;
+                for (var i = 0; i < fileLen; i++) {
+                    count += document.querySelectorAll(".collect_img")[i].children.length;
+                }
+                if (constant.needPic > count) {
+                    tips.NO_SIX = false;
+                    return false;
+                }
+                return true;
+            },
+            selectClassify: function () {
+                // 2. 判断是否选择了类型
+                var classify = document.querySelector(".selectClassfiy").children;
+                classify = Array.prototype.slice.call(classify);
+
+                // 如果true,表示选择了类型，false表示未选择
+                var classifyFlag = classify.some(function (v) {
+                    return v.className.trim() === "layui-btn";
+                });
+                if (!classifyFlag) {
+                    tips.UNSELECT_CLASSIFY = false;
+                    return false;
+                }
+                return true;
+            },
+            inputArrId: function () {
+                // 3. 液晶类型编号确认。
+                var arr_id = document.getElementById("type_arrid").value.trim();
+                if (arr_id == "") {
+                    // 没有输入液晶类型编号
+                    tips.NO_SELECT_ARRID = false;
+                    return false;
+                }
+                return true;
+            },
+            inputPrice: function () {
+                // 3. 液晶类型编号确认。
+                var price = document.getElementById("price").value.trim();
+                if (price == "" || Number.isNaN(Number(price))) {
+                    // 没有输入液晶类型编号
+                    tips.NO_SELECT_PRICE = false;
+                    return false;
+                }
+                return true;
+            }
+        };
+
+        /**
+         * 选择要上传图片的手机型号
+         * @type {{init: init, removeBtn: removeBtn}}
+         */
+        var Classify = {
+            init: function () {
+                var classify = document.querySelector(".selectClassfiy").children;
+                classify = Array.prototype.slice.call(classify);
+                var that = this;
+                classify.forEach(function (v) {
+                    var is_mobi = navigator.userAgent.toLowerCase().match(/(ipod|ipad|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|wince)/i) != null;
+                    // 手机端
+                    if (is_mobi) {
+                        v.addEventListener("touchstart", function () {
+                            that.removeBtn(classify);
+                            v.className = "layui-btn";
+                        }, false);
+                    } else {
+                        v.onclick = function () {
+                            that.removeBtn(classify);
+                            v.className = "layui-btn";
+                        };
+                    }
+                });
+            },
+            removeBtn: function (classify) {
+                for (var i = 0; i < classify.length; i++) {
+                    if (classify[i].className.trim() === "layui-btn")
+                        classify[i].className = "btn";
+                }
+            }
+        };
+        Classify.init();
+
+        /**
+         * 上传图片
+         */
+        upload.addEventListener('click', ajax.init, false);
+    }())
+</script>
+</body>
+</html>
